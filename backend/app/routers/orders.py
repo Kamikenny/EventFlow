@@ -80,7 +80,9 @@ def create_order(
     # RM3: maximum 6 tickets per order.
     # BUG B2 (fil rouge): quand active, ce controle est absent cote API (seul le front limite).
     if total_qty > MAX_TICKETS_PER_ORDER and not settings.seed_bugs:
-        raise HTTPException(status_code=400, detail=f"Maximum {MAX_TICKETS_PER_ORDER} tickets per order")
+        raise HTTPException(
+            status_code=400, detail=f"Maximum {MAX_TICKETS_PER_ORDER} tickets per order"
+        )
 
     order = Order(
         user_id=current.id,
@@ -126,10 +128,7 @@ def my_orders(
 ):
     expire_stale_orders(db)
     return (
-        db.query(Order)
-        .filter(Order.user_id == current.id)
-        .order_by(Order.created_at.desc())
-        .all()
+        db.query(Order).filter(Order.user_id == current.id).order_by(Order.created_at.desc()).all()
     )
 
 
