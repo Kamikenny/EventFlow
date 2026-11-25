@@ -10,7 +10,9 @@ def unique(prefix="qa"):
     return f"{prefix}-{uuid.uuid4().hex[:8]}"
 
 
-def create_event(admin: ApiClient, status="published", early_quota=50, full_quota=200, vip_quota=3, title=None):
+def create_event(
+    admin: ApiClient, status="published", early_quota=50, full_quota=200, vip_quota=3, title=None
+):
     """Cree un evenement dedie aux tests via l'API back-office et retourne son detail."""
     payload = {
         "title": title or f"QA Event {unique()}",
@@ -33,10 +35,15 @@ def create_event(admin: ApiClient, status="published", early_quota=50, full_quot
 
 def register_user(api: ApiClient, password="Passw0rd!"):
     email = f"{unique('user')}@example.com"
-    r = api.post("/api/auth/register", json={"email": email, "password": password, "full_name": "QA User"})
+    r = api.post(
+        "/api/auth/register", json={"email": email, "password": password, "full_name": "QA User"}
+    )
     assert r.status_code == 201, r.text
     return email, password
 
 
 def category(event, name):
     return next(c for c in event["categories"] if c["name"] == name)
+
+
+3
